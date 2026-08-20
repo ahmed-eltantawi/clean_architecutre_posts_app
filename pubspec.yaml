@@ -51,6 +51,9 @@ dependencies:
   # For http requests
   http: ^1.6.0
 
+  # Internet connection checker
+  internet_connection_checker: ^3.0.1
+
   # For shared preferences (Local Storage)
   # shared_preferences: ^2.5.5
 

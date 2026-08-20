@@ -1,5 +1,4 @@
 import 'package:clean_architecutre_posts_app/features/posts/data/models/post_model.dart';
-import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post_entity.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class PostRemoteDataSource {
@@ -11,6 +10,12 @@ abstract class PostRemoteDataSource {
 
 class PostRemoteDataSourceImplWithHttp implements PostRemoteDataSource {
   @override
+  Future<List<PostModel>> getAllPosts() {
+    // TODO: implement getAllPosts
+    throw UnimplementedError();
+  }
+
+  @override
   Future<Unit> createPost({required PostModel post}) {
     // TODO: implement createPost
     throw UnimplementedError();
@@ -19,12 +24,6 @@ class PostRemoteDataSourceImplWithHttp implements PostRemoteDataSource {
   @override
   Future<Unit> deletePost({required int postId}) {
     // TODO: implement deletePost
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<PostModel>> getAllPosts() {
-    // TODO: implement getAllPosts
     throw UnimplementedError();
   }
 
