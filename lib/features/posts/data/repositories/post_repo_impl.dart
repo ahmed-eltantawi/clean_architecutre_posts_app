@@ -1,9 +1,15 @@
 import 'package:clean_architecutre_posts_app/core/errors/failures.dart';
+import 'package:clean_architecutre_posts_app/features/posts/data/datasources/post_local_data_source.dart';
+import 'package:clean_architecutre_posts_app/features/posts/data/datasources/post_remote_data_source.dart';
 import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post_entity.dart';
 import 'package:clean_architecutre_posts_app/features/posts/domain/repositories/post_repo.dart';
 import 'package:dartz/dartz.dart';
 
 class PostRepoImpl extends PostRepo {
+  final PostRemoteDataSource postRemoteDataSource;
+  final PostLocalDataSource postLocalDataSource;
+
+  new({required this.postRemoteDataSource, required this.postLocalDataSource});
   @override
   Future<Either<Failure, Unit>> createPost({required PostEntity post}) {
     // TODO: implement createPost
