@@ -1,5 +1,6 @@
 import 'package:clean_architecutre_posts_app/core/errors/failures.dart';
 import 'package:clean_architecutre_posts_app/core/network/network_info.dart';
+import 'package:clean_architecutre_posts_app/core/utils/typedefs.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/datasources/post_local_data_source.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/datasources/post_remote_data_source.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/models/post_model.dart';
@@ -7,6 +8,9 @@ import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post
 import 'package:clean_architecutre_posts_app/features/posts/domain/repositories/post_repo.dart';
 import 'package:dartz/dartz.dart';
 
+/// This is the implementation of the PostRepo
+/// which do four use cases [getAllPosts, createPost, updatePost, deletePost]
+/// It deal with the local and remote data sources
 class PostRepoImpl extends PostRepo {
   final PostRemoteDataSource postRemoteDataSource;
   final PostLocalDataSource postLocalDataSource;
@@ -19,7 +23,10 @@ class PostRepoImpl extends PostRepo {
   });
 
   @override
-  Future<Either<Failure, List<PostEntity>>> getAllPosts() async {
+  /// return the list of posts or a failure
+  /// if the device is not connected to the internet, it will return the cached posts
+  /// if the device is connected to the internet, it will return the remote posts
+  FutureEither<List<PostEntity>> getAllPosts() async {
     if (await networkInfo.isConnected) {
       try {
         final remoteResult = await postRemoteDataSource.getAllPosts();
@@ -39,50 +46,43 @@ class PostRepoImpl extends PostRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> createPost({required PostEntity post}) async {
+  FutureEither<Unit> createPost({required PostEntity post}) async {
     final PostModel postModel = PostModel(
       id: post.id,
       title: post.title,
       body: post.body,
     );
 
-    if (await networkInfo.isConnected) {
-      try {
-        await postRemoteDataSource.createPost(post: postModel);
-        return Right(unit);
-      } catch (e) {
-        return Left(ServerFailure());
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+    return await _call(() {
+      return postRemoteDataSource.createPost(post: postModel);
+    });
   }
 
   @override
-  Future<Either<Failure, Unit>> deletePost({required int postId}) async {
-    if (await networkInfo.isConnected) {
-      try {
-        await postRemoteDataSource.deletePost(postId: postId);
-        return Right(unit);
-      } catch (e) {
-        return Left(ServerFailure());
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+  FutureEither<Unit> deletePost({required int postId}) async {
+    return await _call(() {
+      return postRemoteDataSource.deletePost(postId: postId);
+    });
   }
 
   @override
-  Future<Either<Failure, Unit>> updatePost({required PostEntity post}) async {
+  FutureEither<Unit> updatePost({required PostEntity post}) async {
     final PostModel postModel = PostModel(
       id: post.id,
       title: post.title,
       body: post.body,
     );
+    return await _call(() {
+      return postRemoteDataSource.updatePost(post: postModel);
+    });
+  }
 
+  /// This is a private helper function to make the code more readable
+  /// and to avoid duplicated code
+  FutureEither<Unit> _call(Future<Unit> Function() function) async {
     if (await networkInfo.isConnected) {
       try {
-        await postRemoteDataSource.updatePost(post: postModel);
+        await function();
         return Right(unit);
       } catch (e) {
         return Left(ServerFailure());
