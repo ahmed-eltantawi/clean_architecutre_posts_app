@@ -2,12 +2,11 @@ import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post
 import 'package:clean_architecutre_posts_app/features/posts/domain/repositories/post_repo.dart';
 import 'package:dartz/dartz.dart';
 
-class GetAllPostsUsecase {
+class CreatePostUsecase {
   final PostRepo postRepo;
+  CreatePostUsecase(this.postRepo);
 
-  GetAllPostsUsecase(this.postRepo);
-
-  Future<Either<Failure, List<PostEntity>>> call() async {
-    return await postRepo.getAllPosts();
+  Future<Either<Failure, Unit>> call({required PostEntity post}) async {
+    return await postRepo.createPost(post: post);
   }
 }
