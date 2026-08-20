@@ -3,6 +3,8 @@ import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post
 import 'package:clean_architecutre_posts_app/features/posts/domain/repositories/post_repo.dart';
 import 'package:dartz/dartz.dart';
 
+/// this use case is used to get all posts
+/// it calls the [PostRepo.getAllPosts]
 class GetAllPostsUsecase {
   final PostRepo postRepo;
 

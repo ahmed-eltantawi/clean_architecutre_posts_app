@@ -1,3 +1,6 @@
+// This file is used to create custom failures for the application
+// Start with a generic failure class
+// Then create specific failure classes for each type of failure
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {}

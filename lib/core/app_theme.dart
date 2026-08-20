@@ -1,3 +1,4 @@
+// This file is used to create custom themes for the application
 import 'package:flutter/material.dart';
 
 final primaryColor = Color(0xff082659);
