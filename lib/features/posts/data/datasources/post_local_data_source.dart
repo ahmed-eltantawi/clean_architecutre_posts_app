@@ -5,6 +5,7 @@ import 'package:clean_architecutre_posts_app/features/posts/data/models/post_mod
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// This is the interface for the PostLocalDataSource
 abstract class PostLocalDataSource {
   Future<List<PostModel>> getAllCachedPosts();
   Future<Unit> cachePosts({required List<PostModel> posts});
@@ -17,7 +18,7 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   PostLocalDataSourceImpl({required this.sharedPreferences}); //Constructor
 
   @override
-  ///This Method is used to cache the posts in the local storage
+  ///!This Method is used to cache the posts in the local storage
   Future<Unit> cachePosts({required List<PostModel> posts}) {
     // convert the List<PostModel> to List<Map<String, dynamic>>
     final List postModelsToJson = posts
@@ -32,6 +33,7 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   }
 
   @override
+  ///!This Method is used to get the posts from the local storage
   Future<List<PostModel>> getAllCachedPosts() async {
     // get the posts from the sharedPreferences(local storage)
     final jsonString = sharedPreferences.getString("CACHED_POSTS");
@@ -49,6 +51,7 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
 
       return jsonToPostModels;
     } else {
+      // throw an exception if the posts are not found
       throw EmptyCacheException();
     }
   }
