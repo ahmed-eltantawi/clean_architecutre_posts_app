@@ -6,7 +6,7 @@ class PostModel extends PostEntity {
   const new({required super.id, required super.title, required super.body});
 
   /// Turn Json to [PostModel]
-  factory PostModel.formJson(Map<String, dynamic> json) {
+  factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(id: json["id"], title: json["title"], body: json["body"]);
   }
 

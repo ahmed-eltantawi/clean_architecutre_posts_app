@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clean_architecutre_posts_app/core/errors/exceptions.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/models/post_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,5 +32,24 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   }
 
   @override
-  Future<List<PostModel>> getAllCachedPosts() {}
+  Future<List<PostModel>> getAllCachedPosts() async {
+    // get the posts from the sharedPreferences(local storage)
+    final jsonString = sharedPreferences.getString("CACHED_POSTS");
+
+    if (jsonString != null) {
+      // convert the List<Map<String, dynamic>> to List<PostModel>
+      final List decodedJsonData = json.decode(jsonString);
+
+      // convert the List<Map<String, dynamic>> to List<PostModel>
+      final List<PostModel> jsonToPostModels = await Future.value(
+        decodedJsonData
+            .map<PostModel>((post) => PostModel.fromJson(post))
+            .toList(),
+      );
+
+      return jsonToPostModels;
+    } else {
+      throw EmptyCacheException();
+    }
+  }
 }
