@@ -19,7 +19,7 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   ///This Method is used to cache the posts in the local storage
   Future<Unit> cachePosts({required List<PostModel> posts}) {
     // convert the List<PostModel> to List<Map<String, dynamic>>
-    List postModelsToJson = posts
+    final List postModelsToJson = posts
         .map<Map<String, dynamic>>((post) => post.toJson())
         .toList();
 
