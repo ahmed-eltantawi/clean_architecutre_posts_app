@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:clean_architecutre_posts_app/core/cache/cache_helper.dart';
+import 'package:clean_architecutre_posts_app/core/cache/cache_key.dart';
 import 'package:clean_architecutre_posts_app/core/errors/exceptions.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/models/post_model.dart';
 import 'package:dartz/dartz.dart';
@@ -12,10 +14,15 @@ abstract class PostLocalDataSource {
 }
 
 class PostLocalDataSourceImpl implements PostLocalDataSource {
+  final CacheHelper cacheHelper;
+
   // we take an instance of SharedPreferences to apply the dependency injection pattern
   SharedPreferences sharedPreferences;
 
-  PostLocalDataSourceImpl({required this.sharedPreferences}); //Constructor
+  PostLocalDataSourceImpl({
+    required this.sharedPreferences,
+    required this.cacheHelper,
+  }); //Constructor
 
   @override
   ///!This Method is used to cache the posts in the local storage
@@ -26,7 +33,7 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
         .toList();
 
     // save the posts in the sharedPreferences(local storage)
-    sharedPreferences.setString("CACHED_POSTS", json.encode(postModelsToJson));
+    cacheHelper.saveData(key: CacheKey.cachedPosts, value: postModelsToJson);
 
     // return the unit if the operation is successful
     return Future.value(unit);
@@ -36,7 +43,7 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   ///!This Method is used to get the posts from the local storage
   Future<List<PostModel>> getAllCachedPosts() async {
     // get the posts from the sharedPreferences(local storage)
-    final jsonString = sharedPreferences.getString("CACHED_POSTS");
+    final jsonString = cacheHelper.getData(key: CacheKey.cachedPosts);
 
     if (jsonString != null) {
       // convert the List<Map<String, dynamic>> to List<PostModel>
