@@ -14,7 +14,7 @@ final class PostsInitial extends PostsState {}
 final class PostsLoadingState extends PostsState {}
 
 final class PostsLoadedState extends PostsState {
-  final List<PostModel> posts;
+  final List<PostEntity> posts;
   const PostsLoadedState({required this.posts});
 
   @override
@@ -22,9 +22,9 @@ final class PostsLoadedState extends PostsState {
 }
 
 final class PostsFailureState extends PostsState {
-  final Failure failure;
-  const PostsFailureState({required this.failure});
+  final String failureMessage;
+  const PostsFailureState({required this.failureMessage});
 
   @override
-  List<Object> get props => [failure];
+  List<Object> get props => [failureMessage];
 }

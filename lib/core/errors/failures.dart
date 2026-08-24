@@ -3,24 +3,36 @@
 // Then create specific failure classes for each type of failure
 import 'package:equatable/equatable.dart';
 
-abstract class Failure extends Equatable {}
+abstract class Failure extends Equatable {
+  final String message;
+
+  const new({required this.message});
+}
 
 class OfflineFailure extends Failure {
+  const new({required super.message});
+
   @override
   List<Object?> get props => [];
 }
 
 class ServerFailure extends Failure {
+  const new({required super.message});
+
   @override
   List<Object?> get props => [];
 }
 
 class CacheFailure extends Failure {
+  const new({required super.message});
+
   @override
   List<Object?> get props => [];
 }
 
 class EmptyCacheFailure extends Failure {
+  const new({required super.message});
+
   @override
   List<Object?> get props => [];
 }

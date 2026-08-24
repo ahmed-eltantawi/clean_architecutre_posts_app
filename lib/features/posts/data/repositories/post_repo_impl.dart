@@ -33,14 +33,18 @@ class PostRepoImpl extends PostRepo {
         await postLocalDataSource.cachePosts(posts: remoteResult);
         return Right(remoteResult);
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(
+          ServerFailure(message: "There was a problem with the server"),
+        );
       }
     } else {
       try {
         final localResult = await postLocalDataSource.getAllCachedPosts();
         return Right(localResult);
       } catch (e) {
-        return Left(CacheFailure());
+        return Left(
+          CacheFailure(message: 'There was a problem with the cache'),
+        );
       }
     }
   }
@@ -85,10 +89,12 @@ class PostRepoImpl extends PostRepo {
         await function();
         return Right(unit);
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(
+          ServerFailure(message: "There was a problem with the server"),
+        );
       }
     } else {
-      return Left(OfflineFailure());
+      return Left(OfflineFailure(message: "You are offline"));
     }
   }
 }
