@@ -10,28 +10,28 @@ abstract class Failure extends Equatable {
 }
 
 class OfflineFailure extends Failure {
-  const new({required super.message});
+  const new({super.message = 'You are offline'});
 
   @override
   List<Object?> get props => [];
 }
 
 class ServerFailure extends Failure {
-  const new({required super.message});
+  const new({super.message = 'There was a problem with the server'});
 
   @override
   List<Object?> get props => [];
 }
 
 class CacheFailure extends Failure {
-  const new({required super.message});
+  const new({super.message = 'There was a problem with the cache'});
 
   @override
   List<Object?> get props => [];
 }
 
 class EmptyCacheFailure extends Failure {
-  const new({required super.message});
+  const new({super.message = 'There was a problem with the cache'});
 
   @override
   List<Object?> get props => [];
