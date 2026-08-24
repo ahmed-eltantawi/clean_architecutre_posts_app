@@ -16,4 +16,7 @@ final class AddDeleteUpdatePostErrorState extends AddDeleteUpdatePostState {
   const AddDeleteUpdatePostErrorState({required this.message});
 }
 
-final class AddDeleteUpdatePostSuccessState extends AddDeleteUpdatePostState {}
+final class AddDeleteUpdatePostSuccessState extends AddDeleteUpdatePostState {
+  final String message;
+  const AddDeleteUpdatePostSuccessState({required this.message});
+}

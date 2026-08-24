@@ -8,13 +8,13 @@ sealed class AddDeleteUpdatePostEvent extends Equatable {
 }
 
 class AddPostEvent extends AddDeleteUpdatePostEvent {
-  final PostModel postModel;
-  const AddPostEvent({required this.postModel});
+  final PostEntity postEntity;
+  const AddPostEvent({required this.postEntity});
 }
 
 class UpdatePostEvent extends AddDeleteUpdatePostEvent {
-  final PostModel postModel;
-  const UpdatePostEvent({required this.postModel});
+  final PostEntity postEntity;
+  const UpdatePostEvent({required this.postEntity});
 }
 
 class DeletePostEvent extends AddDeleteUpdatePostEvent {
