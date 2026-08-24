@@ -27,6 +27,12 @@ class AddDeleteUpdatePostBloc
       if (event is AddPostEvent) {
         final result = await createPostUsecase(post: event.postEntity);
         customFold(result, 'Post Added Successfully');
+      } else if (event is UpdatePostEvent) {
+        final result = await updatePostUsecase(post: event.postEntity);
+        customFold(result, 'Post Updated Successfully');
+      } else if (event is DeletePostEvent) {
+        final result = await deletePostUsecase(postId: event.postId);
+        customFold(result, 'Post Deleted Successfully');
       }
     });
   }
