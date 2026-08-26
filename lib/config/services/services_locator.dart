@@ -74,10 +74,11 @@ Future<void> setupServiceLocator() async {
   //! ======= External =========
 
   // ---> Shared Preferences <---
-  getIt.registerLazySingletonAsync(() async {
-    return await SharedPreferences.getInstance();
-  });
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   // ---> Dio <---
   getIt.registerLazySingleton(() => Dio());
+  //consumer
+  getIt.registerLazySingleton<DioConsumer>(() => DioConsumer(dio: getIt()));
 }
