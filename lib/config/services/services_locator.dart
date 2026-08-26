@@ -59,7 +59,6 @@ Future<void> setupServiceLocator() async {
   //local
   getIt.registerLazySingleton<PostLocalDataSource>(
     () => PostLocalDataSourceImpl(
-      sharedPreferences: getIt(),
       cacheHelper: getIt(),
     ),
   );
@@ -68,14 +67,14 @@ Future<void> setupServiceLocator() async {
   // ---> Network Info <---
   getIt.registerLazySingleton(() => NetworkInfoImpl());
 
-  // ---> Cache Helper <---
-  getIt.registerLazySingleton(() => CacheHelper());
-
   //! ======= External =========
 
   // ---> Shared Preferences <---
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
+  // ---> Cache Helper <---
+  getIt.registerLazySingleton(() => CacheHelper(preferences: getIt()));
 
   // ---> Dio <---
   getIt.registerLazySingleton(() => Dio());

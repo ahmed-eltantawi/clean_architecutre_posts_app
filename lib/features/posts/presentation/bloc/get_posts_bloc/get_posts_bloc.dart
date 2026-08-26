@@ -8,7 +8,7 @@ import 'package:dartz/dartz.dart';
 part 'get_posts_event.dart';
 part 'get_posts_state.dart';
 
-class GetPostsBloc extends Bloc<PostsEvent, PostsState> {
+class GetPostsBloc extends Bloc<PostsEvent, GetPostsState> {
   final GetAllPostsUsecase getAllPostsUsecase; // this is the use case
   GetPostsBloc({required this.getAllPostsUsecase}) : super(PostsInitial()) {
     on<PostsEvent>((event, emit) async {
@@ -22,11 +22,11 @@ class GetPostsBloc extends Bloc<PostsEvent, PostsState> {
 
         // fold the result
         result.fold(
-          (failure) => emit(PostsFailureState(failureMessage: failure.message)),
+          (failure) => emit(PostsFailureState(message: failure.message)),
           (posts) => emit(PostsLoadedState(posts: posts)),
         );
       } else {
-        emit(PostsFailureState(failureMessage: 'Invalid event'));
+        emit(PostsFailureState(message: 'Invalid event'));
       }
     });
   }

@@ -1,18 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {
-  late final SharedPreferences preferences;
+  final SharedPreferences preferences;
 
-  //TODO: Remove Comment when add secure storage
-  //! static const FlutterSecureStorage _storage = FlutterSecureStorage();
-
-  //? ====================================================
-  //? ================ Shared Preferences ================
-  //? ====================================================
-  //! Here The Initialization of Shared Preferences
-  Future<void> init() async {
-    preferences = await SharedPreferences.getInstance();
-  }
+  CacheHelper({required this.preferences});
 
   //! This Method Put Data To local Database of any Type with Key
   Future<bool> saveData({required String key, required dynamic value}) async {

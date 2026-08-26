@@ -1,8 +1,8 @@
 // This file is used to create custom themes for the application
 import 'package:flutter/material.dart';
 
-final primaryColor = Color(0xff082659);
-final secondaryColor = Color(0xff51eec2);
+const primaryColor = Color(0xff082659);
+const secondaryColor = Color(0xff51eec2);
 
 final appTheme = ThemeData(
   appBarTheme: AppBarTheme(backgroundColor: primaryColor, centerTitle: true),

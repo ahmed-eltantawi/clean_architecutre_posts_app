@@ -5,7 +5,6 @@ import 'package:clean_architecutre_posts_app/core/cache/cache_key.dart';
 import 'package:clean_architecutre_posts_app/core/errors/exceptions.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/models/post_model.dart';
 import 'package:dartz/dartz.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// This is the interface for the PostLocalDataSource
 abstract class PostLocalDataSource {
@@ -16,27 +15,26 @@ abstract class PostLocalDataSource {
 class PostLocalDataSourceImpl implements PostLocalDataSource {
   final CacheHelper cacheHelper;
 
-  // we take an instance of SharedPreferences to apply the dependency injection pattern
-  SharedPreferences sharedPreferences;
-
   PostLocalDataSourceImpl({
-    required this.sharedPreferences,
     required this.cacheHelper,
   }); //Constructor
 
   @override
   ///!This Method is used to cache the posts in the local storage
-  Future<Unit> cachePosts({required List<PostModel> posts}) {
+  Future<Unit> cachePosts({required List<PostModel> posts}) async {
     // convert the List<PostModel> to List<Map<String, dynamic>>
     final List postModelsToJson = posts
         .map<Map<String, dynamic>>((post) => post.toJson())
         .toList();
 
-    // save the posts in the sharedPreferences(local storage)
-    cacheHelper.saveData(key: CacheKey.cachedPosts, value: postModelsToJson);
+    // save the encoded json string in the sharedPreferences(local storage)
+    await cacheHelper.saveData(
+      key: CacheKey.cachedPosts,
+      value: json.encode(postModelsToJson),
+    );
 
     // return the unit if the operation is successful
-    return Future.value(unit);
+    return unit;
   }
 
   @override
@@ -45,16 +43,14 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
     // get the posts from the sharedPreferences(local storage)
     final jsonString = cacheHelper.getData(key: CacheKey.cachedPosts);
 
-    if (jsonString != null) {
-      // convert the List<Map<String, dynamic>> to List<PostModel>
+    if (jsonString != null && jsonString is String) {
+      // convert the JSON string to List<dynamic>
       final List decodedJsonData = json.decode(jsonString);
 
-      // convert the List<Map<String, dynamic>> to List<PostModel>
-      final List<PostModel> jsonToPostModels = await Future.value(
-        decodedJsonData
-            .map<PostModel>((post) => PostModel.fromJson(post))
-            .toList(),
-      );
+      // convert the List<dynamic> to List<PostModel>
+      final List<PostModel> jsonToPostModels = decodedJsonData
+          .map<PostModel>((post) => PostModel.fromJson(post))
+          .toList();
 
       return jsonToPostModels;
     } else {

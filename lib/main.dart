@@ -2,11 +2,10 @@ import 'package:clean_architecutre_posts_app/config/services/services_locator.da
 import 'package:clean_architecutre_posts_app/core/app_theme.dart';
 import 'package:clean_architecutre_posts_app/features/posts/presentation/bloc/add_delete_update_post_bloc/add_delete_update_post_bloc.dart';
 import 'package:clean_architecutre_posts_app/features/posts/presentation/bloc/get_posts_bloc/get_posts_bloc.dart';
+import 'package:clean_architecutre_posts_app/features/posts/presentation/pages/posts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-late SharedPreferences sharedPreferences;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
@@ -20,13 +19,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<GetPostsBloc>()),
+        BlocProvider(
+          create: (context) => getIt<GetPostsBloc>()..add(GetAllPostsEvent()),
+        ),
         BlocProvider(create: (context) => getIt<AddDeleteUpdatePostBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: appTheme,
-        home: Scaffold(),
+        home: PostsPage(),
       ),
     );
   }
