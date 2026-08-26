@@ -5,12 +5,12 @@ import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post
 import 'package:clean_architecutre_posts_app/features/posts/domain/useCases/get_all_posts_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:dartz/dartz.dart';
-part 'posts_event.dart';
-part 'posts_state.dart';
+part 'get_posts_event.dart';
+part 'get_posts_state.dart';
 
-class PostsBloc extends Bloc<PostsEvent, PostsState> {
+class GetPostsBloc extends Bloc<PostsEvent, PostsState> {
   final GetAllPostsUsecase getAllPostsUsecase; // this is the use case
-  PostsBloc({required this.getAllPostsUsecase}) : super(PostsInitial()) {
+  GetPostsBloc({required this.getAllPostsUsecase}) : super(PostsInitial()) {
     on<PostsEvent>((event, emit) async {
       // first emit the loading state
       emit(PostsLoadingState());

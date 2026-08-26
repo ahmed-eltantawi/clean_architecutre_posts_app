@@ -12,10 +12,10 @@ abstract class PostRemoteDataSource {
 }
 
 /// This is the implementation of the PostRemoteDataSource
-class PostRemoteDataSourceImplWithHttp implements PostRemoteDataSource {
+class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
   DioConsumer dioConsumer;
 
-  PostRemoteDataSourceImplWithHttp({required this.dioConsumer});
+  PostRemoteDataSourceImplWithDio({required this.dioConsumer});
   @override
   //! this method is used to get all the posts
   Future<List<PostModel>> getAllPosts() async {

@@ -7,7 +7,7 @@ import 'package:clean_architecutre_posts_app/features/posts/domain/repositories/
 class GetAllPostsUsecase {
   final PostRepo postRepo;
 
-  GetAllPostsUsecase(this.postRepo);
+  GetAllPostsUsecase({required this.postRepo});
 
   FutureEither<List<PostEntity>> call() async {
     return await postRepo.getAllPosts();

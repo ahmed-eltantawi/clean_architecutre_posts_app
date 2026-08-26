@@ -1,6 +1,6 @@
 //? this file is used to create the state of the bloc
 //? There are 4 states: initial, loading, loaded and failure
-part of 'posts_bloc.dart';
+part of 'get_posts_bloc.dart';
 
 sealed class PostsState extends Equatable {
   const PostsState();
