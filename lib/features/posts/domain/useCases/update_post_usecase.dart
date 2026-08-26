@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 /// it calls the [PostRepo.updatePost]
 class UpdatePostUsecase {
   final PostRepo postRepo;
-  UpdatePostUsecase(this.postRepo);
+  UpdatePostUsecase({required this.postRepo});
 
   FutureEither<Unit> call({required PostEntity post}) async {
     return await postRepo.updatePost(post: post);

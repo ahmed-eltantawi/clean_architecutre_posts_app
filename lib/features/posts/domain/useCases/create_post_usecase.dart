@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 /// it calls the [PostRepo.createPost]
 class CreatePostUsecase {
   final PostRepo postRepo;
-  CreatePostUsecase(this.postRepo);
+  CreatePostUsecase({required this.postRepo});
 
   FutureEither<Unit> call({required PostEntity post}) async {
     return await postRepo.createPost(post: post);
