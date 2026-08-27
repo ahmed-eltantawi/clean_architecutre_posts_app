@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clean_architecutre_posts_app/core/errors/failures.dart';
 import 'package:clean_architecutre_posts_app/core/network/network_info.dart';
 import 'package:clean_architecutre_posts_app/core/utils/typedefs.dart';
@@ -27,15 +29,20 @@ class PostRepoImpl extends PostRepo {
   /// if the device is not connected to the internet, it will return the cached posts
   /// if the device is connected to the internet, it will return the remote posts
   FutureEither<List<PostEntity>> getAllPosts() async {
-    if (await networkInfo.isConnected) {
+    log("0");
+    if (await networkInfo.isConnected()) {
+      log("===== There is a network connection");
       try {
+        log("1");
         final remoteResult = await postRemoteDataSource.getAllPosts();
         await postLocalDataSource.cachePosts(posts: remoteResult);
+        log("2");
         return Right(remoteResult);
       } catch (e) {
         return Left(ServerFailure());
       }
     } else {
+      log("===== There is no network connection");
       try {
         final localResult = await postLocalDataSource.getAllCachedPosts();
         return Right(localResult);
@@ -80,7 +87,7 @@ class PostRepoImpl extends PostRepo {
   /// This is a private helper function to make the code more readable
   /// and to avoid duplicated code
   FutureEither<Unit> _call(Future<Unit> Function() function) async {
-    if (await networkInfo.isConnected) {
+    if (await networkInfo.isConnected()) {
       try {
         await function();
         return Right(unit);

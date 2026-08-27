@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clean_architecutre_posts_app/core/network/api_end_points.dart';
 import 'package:clean_architecutre_posts_app/core/network/dio_consumer.dart';
 import 'package:clean_architecutre_posts_app/features/posts/data/models/post_model.dart';
@@ -19,6 +21,7 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
   @override
   //! this method is used to get all the posts
   Future<List<PostModel>> getAllPosts() async {
+    log("getAllPosts usecase called");
     // send a get request to the api
     final response = await dioConsumer.get(EndPoint.baseUrl + EndPoint.posts);
 
@@ -26,6 +29,7 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
     final posts = response as List;
 
     // convert the list to a list of PostModel and return it
+    log("getAllPosts usecase finished");
     return posts.map((post) => PostModel.fromJson(post)).toList();
   }
 

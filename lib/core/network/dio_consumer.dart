@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:clean_architecutre_posts_app/core/network/api_consumer.dart';
 import 'package:clean_architecutre_posts_app/core/network/api_end_points.dart';
@@ -8,7 +10,22 @@ class DioConsumer extends ApiConsumer {
     dio.options.baseUrl = EndPoint.baseUrl;
 
     //TODO: Remove This comment when add Interceptor
-    // dio.interceptors.add(ApiInterceptor(dio));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          log(options.uri.toString());
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          log(response.data.toString());
+          return handler.next(response);
+        },
+        onError: (error, handler) {
+          log(error.toString());
+          return handler.next(error);
+        },
+      ),
+    );
     dio.interceptors.add(
       LogInterceptor(
         request: true,
