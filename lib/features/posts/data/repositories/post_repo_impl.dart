@@ -30,7 +30,9 @@ class PostRepoImpl extends PostRepo {
   /// if the device is connected to the internet, it will return the remote posts
   FutureEither<List<PostEntity>> getAllPosts() async {
     log("0");
-    if (await networkInfo.isConnected()) {
+    bool isConnected = await networkInfo.isConnected;
+    log(isConnected.toString());
+    if (isConnected) {
       log("===== There is a network connection");
       try {
         log("1");
@@ -87,7 +89,7 @@ class PostRepoImpl extends PostRepo {
   /// This is a private helper function to make the code more readable
   /// and to avoid duplicated code
   FutureEither<Unit> _call(Future<Unit> Function() function) async {
-    if (await networkInfo.isConnected()) {
+    if (await networkInfo.isConnected) {
       try {
         await function();
         return Right(unit);
