@@ -12,13 +12,19 @@ class PostsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //* === appBar ===
       appBar: AppBar(backgroundColor: primaryColor),
+
+      //* === body ===
       body: BlocBuilder<GetPostsBloc, GetPostsState>(
         builder: (BuildContext context, state) {
+          //* === refresh indicator ===
           return RefreshIndicator(
             onRefresh: () async {
+              // refresh the posts
               context.read<GetPostsBloc>().add(RefreshPostsEvent());
             },
+            // check the state of the bloc
             child: _checkState(state),
           );
         },
@@ -26,12 +32,19 @@ class PostsPage extends StatelessWidget {
     );
   }
 
+  //======================================================
+  ///* this function is used to check the state of the bloc
+  ///* and return the widget that corresponds to the state
+  //======================================================
   Widget _checkState(GetPostsState state) {
     if (state is PostsLoadedState) {
+      // If the state is PostsLoadedState return the ListViewPostsWidget
       return ListViewPostsWidget(posts: state.posts);
     } else if (state is PostsFailureState) {
+      // If the state is PostsFailureState return the ShowErrorWidget
       return ShowErrorWidget(message: state.message);
     } else {
+      // If the state is not PostsLoadedState or PostsFailureState return the CustomProgressIndicatorWidget
       return const CustomProgressIndicatorWidget();
     }
   }
