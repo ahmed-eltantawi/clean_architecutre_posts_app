@@ -24,7 +24,7 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
     log("getAllPosts usecase called");
     // send a get request to the api
     final response = await dioConsumer.get(EndPoint.baseUrl + EndPoint.posts);
-
+    log("getAllPosts usecase response: $response");
     // convert the response to a list
     final posts = response as List;
 

@@ -29,10 +29,7 @@ class PostRepoImpl extends PostRepo {
   /// if the device is not connected to the internet, it will return the cached posts
   /// if the device is connected to the internet, it will return the remote posts
   FutureEither<List<PostEntity>> getAllPosts() async {
-    log("0");
-    bool isConnected = await networkInfo.isConnected;
-    log(isConnected.toString());
-    if (isConnected) {
+    if (await networkInfo.isConnected) {
       log("===== There is a network connection");
       try {
         log("1");
