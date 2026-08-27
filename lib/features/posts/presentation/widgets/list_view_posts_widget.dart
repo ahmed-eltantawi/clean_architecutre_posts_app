@@ -1,4 +1,5 @@
 import 'package:clean_architecutre_posts_app/features/posts/domain/entities/post_entity.dart';
+import 'package:clean_architecutre_posts_app/features/posts/presentation/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 
 class ListViewPostsWidget extends StatelessWidget {
@@ -9,17 +10,7 @@ class ListViewPostsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-            posts[index].title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            posts[index].body,
-            style: const TextStyle(fontSize: 12),
-          ),
-          leading: CircleAvatar(child: Text("${posts[index].id}")),
-        );
+        return PostWidget(post: posts[index]);
       },
       separatorBuilder: (context, index) {
         return const Divider(thickness: 1);
