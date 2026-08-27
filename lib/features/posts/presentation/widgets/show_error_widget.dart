@@ -9,6 +9,7 @@ class ShowErrorWidget extends StatelessWidget {
     return Center(
       child: Text(
         message,
+        textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.red, fontSize: 16),
       ),
     );

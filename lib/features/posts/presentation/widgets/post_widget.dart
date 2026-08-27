@@ -8,13 +8,16 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        post.title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () {},
+      child: ListTile(
+        title: Text(
+          post.title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(post.body, style: const TextStyle(fontSize: 12)),
+        leading: CircleAvatar(child: Text("${post.id}")),
       ),
-      subtitle: Text(post.body, style: const TextStyle(fontSize: 12)),
-      leading: CircleAvatar(child: Text("${post.id}")),
     );
   }
 }

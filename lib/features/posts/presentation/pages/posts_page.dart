@@ -13,19 +13,26 @@ class PostsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: primaryColor),
-      body: Center(
-        child: BlocBuilder<GetPostsBloc, GetPostsState>(
-          builder: (BuildContext context, state) {
-            if (state is PostsLoadedState) {
-              return ListViewPostsWidget(posts: state.posts);
-            } else if (state is PostsFailureState) {
-              return ShowErrorWidget(message: state.message);
-            } else {
-              return const CustomProgressIndicatorWidget();
-            }
-          },
-        ),
+      body: BlocBuilder<GetPostsBloc, GetPostsState>(
+        builder: (BuildContext context, state) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<GetPostsBloc>().add(RefreshPostsEvent());
+            },
+            child: _checkState(state),
+          );
+        },
       ),
     );
+  }
+
+  Widget _checkState(GetPostsState state) {
+    if (state is PostsLoadedState) {
+      return ListViewPostsWidget(posts: state.posts);
+    } else if (state is PostsFailureState) {
+      return ShowErrorWidget(message: state.message);
+    } else {
+      return const CustomProgressIndicatorWidget();
+    }
   }
 }

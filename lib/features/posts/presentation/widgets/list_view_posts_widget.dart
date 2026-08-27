@@ -9,6 +9,7 @@ class ListViewPostsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         return PostWidget(post: posts[index]);
       },
