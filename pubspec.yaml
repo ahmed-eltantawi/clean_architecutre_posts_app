@@ -55,6 +55,9 @@ dependencies:
   # Internet connection checker
   internet_connection_checker: ^3.0.1
 
+  # Network status
+  connectivity_plus: ^6.1.5
+
   # For shared preferences (Local Storage)
   shared_preferences: ^2.5.5
 

@@ -10,10 +10,10 @@ import 'package:clean_architecutre_posts_app/features/posts/domain/useCases/get_
 import 'package:clean_architecutre_posts_app/features/posts/domain/useCases/update_post_usecase.dart';
 import 'package:clean_architecutre_posts_app/features/posts/presentation/bloc/add_delete_update_post_bloc/add_delete_update_post_bloc.dart';
 import 'package:clean_architecutre_posts_app/features/posts/presentation/bloc/get_posts_bloc/get_posts_bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:clean_architecutre_posts_app/core/cache/cache_helper.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Create a global instance (or use GetIt.instance)
@@ -64,13 +64,9 @@ Future<void> setupServiceLocator() async {
 
   //! ======== Core =========
   // ---> Network Info <---
-  getIt.registerLazySingleton<InternetConnectionChecker>(
-    () => InternetConnectionChecker.createInstance(
-      checkTimeout: const Duration(seconds: 3),
-    ),
-  );
+  getIt.registerLazySingleton(() => Connectivity());
   getIt.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(internetConnectionChecker: getIt()),
+    () => NetworkInfoImpl(connectivity: getIt()),
   );
 
   //! ======= External =========

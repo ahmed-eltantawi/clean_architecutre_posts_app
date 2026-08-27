@@ -1,4 +1,6 @@
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 /// abstract class to get information about the network
 abstract class NetworkInfo {
@@ -7,11 +9,33 @@ abstract class NetworkInfo {
 
 /// implementation of NetworkInfo
 class NetworkInfoImpl implements NetworkInfo {
-  final InternetConnectionChecker internetConnectionChecker;
+  final Connectivity connectivity;
 
-  new({required this.internetConnectionChecker});
+  NetworkInfoImpl({required this.connectivity});
 
   @override
   /// check if the device is connected to the internet
-  Future<bool> get isConnected => internetConnectionChecker.hasConnection;
+  Future<bool> get isConnected async {
+    final connectivityResults = await connectivity.checkConnectivity();
+
+    if (connectivityResults.contains(ConnectivityResult.none)) {
+      return false;
+    }
+
+    // Avoid a single HTTP probe that can fail even when the device is online.
+    const hosts = ['example.com', 'cloudflare.com', 'google.com'];
+
+    for (final host in hosts) {
+      try {
+        final result = await InternetAddress.lookup(host);
+        if (result.isNotEmpty && result.first.rawAddress.isNotEmpty) {
+          return true;
+        }
+      } on SocketException {
+        // Try the next host before reporting the device as offline.
+      }
+    }
+
+    return false;
+  }
 }
