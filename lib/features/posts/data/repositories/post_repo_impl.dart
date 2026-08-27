@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:clean_architecutre_posts_app/core/errors/exceptions.dart';
 import 'package:clean_architecutre_posts_app/core/errors/failures.dart';
 import 'package:clean_architecutre_posts_app/core/network/network_info.dart';
 import 'package:clean_architecutre_posts_app/core/utils/typedefs.dart';
@@ -37,8 +38,21 @@ class PostRepoImpl extends PostRepo {
         await postLocalDataSource.cachePosts(posts: remoteResult);
         log("2");
         return Right(remoteResult);
+      } on OfflineException {
+        try {
+          final localResult = await postLocalDataSource.getAllCachedPosts();
+          return Right(localResult);
+        } catch (e) {
+          return const Left(
+            OfflineFailure(
+              message: 'No internet access right now and no cached posts found',
+            ),
+          );
+        }
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.errorModel.errorMessage));
       } catch (e) {
-        return Left(ServerFailure());
+        return const Left(ServerFailure());
       }
     } else {
       log("===== There is no network connection");
@@ -90,11 +104,17 @@ class PostRepoImpl extends PostRepo {
       try {
         await function();
         return Right(unit);
+      } on OfflineException {
+        return const Left(
+          OfflineFailure(message: 'No internet access right now'),
+        );
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.errorModel.errorMessage));
       } catch (e) {
-        return Left(ServerFailure());
+        return const Left(ServerFailure());
       }
     } else {
-      return Left(OfflineFailure());
+      return const Left(OfflineFailure());
     }
   }
 }

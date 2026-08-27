@@ -23,7 +23,7 @@ class NetworkInfoImpl implements NetworkInfo {
     }
 
     // Avoid a single HTTP probe that can fail even when the device is online.
-    const hosts = ['example.com', 'cloudflare.com', 'google.com'];
+    const hosts = ['dummyjson.com', 'cloudflare.com', 'google.com'];
 
     for (final host in hosts) {
       try {

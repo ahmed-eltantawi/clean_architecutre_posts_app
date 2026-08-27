@@ -23,10 +23,10 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
   Future<List<PostModel>> getAllPosts() async {
     log("getAllPosts usecase called");
     // send a get request to the api
-    final response = await dioConsumer.get(EndPoint.baseUrl + EndPoint.posts);
+    final response = await dioConsumer.get(EndPoint.posts);
     log("getAllPosts usecase response: $response");
-    // convert the response to a list
-    final posts = response as List;
+    // DummyJSON returns the collection inside the "posts" key.
+    final posts = (response as Map<String, dynamic>)["posts"] as List;
 
     // convert the list to a list of PostModel and return it
     log("getAllPosts usecase finished");
@@ -37,10 +37,7 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
   //! this method is used to create a post
   Future<Unit> createPost({required PostModel post}) async {
     // send a post request to the api
-    await dioConsumer.post(
-      EndPoint.baseUrl + EndPoint.posts,
-      data: post.toJson(),
-    );
+    await dioConsumer.post(EndPoint.addPost, data: post.toJson());
     return unit;
   }
 
@@ -48,7 +45,7 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
   //! this method is used to delete a post
   Future<Unit> deletePost({required int postId}) async {
     // send a delete request to the api
-    await dioConsumer.delete('${EndPoint.baseUrl}${EndPoint.posts}$postId');
+    await dioConsumer.delete('${EndPoint.posts}/$postId');
     return unit;
   }
 
@@ -56,10 +53,7 @@ class PostRemoteDataSourceImplWithDio implements PostRemoteDataSource {
   //! this method is used to update a post
   Future<Unit> updatePost({required PostModel post}) async {
     // send a put request to the api
-    await dioConsumer.put(
-      '${EndPoint.baseUrl}${EndPoint.posts}${post.id}',
-      data: post.toJson(),
-    );
+    await dioConsumer.put('${EndPoint.posts}/${post.id}', data: post.toJson());
     return unit;
   }
 }

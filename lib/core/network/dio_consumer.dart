@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:clean_architecutre_posts_app/core/network/api_consumer.dart';
@@ -7,7 +8,15 @@ import 'package:clean_architecutre_posts_app/core/errors/exceptions.dart';
 
 class DioConsumer extends ApiConsumer {
   DioConsumer({required this.dio}) {
-    dio.options.baseUrl = EndPoint.baseUrl;
+    dio.options
+      ..baseUrl = EndPoint.baseUrl
+      ..connectTimeout = const Duration(seconds: 15)
+      ..sendTimeout = const Duration(seconds: 15)
+      ..receiveTimeout = const Duration(seconds: 15)
+      ..persistentConnection = false
+      ..headers = {
+        HttpHeaders.acceptHeader: Headers.jsonContentType,
+      };
 
     //TODO: Remove This comment when add Interceptor
     dio.interceptors.add(
