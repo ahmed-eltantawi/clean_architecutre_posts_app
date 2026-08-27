@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -14,23 +13,18 @@ class DioConsumer extends ApiConsumer {
       ..sendTimeout = const Duration(seconds: 15)
       ..receiveTimeout = const Duration(seconds: 15)
       ..persistentConnection = false
-      ..headers = {
-        HttpHeaders.acceptHeader: Headers.jsonContentType,
-      };
+      ..headers = {HttpHeaders.acceptHeader: Headers.jsonContentType};
 
     //TODO: Remove This comment when add Interceptor
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          log(options.uri.toString());
           return handler.next(options);
         },
         onResponse: (response, handler) {
-          log(response.data.toString());
           return handler.next(response);
         },
         onError: (error, handler) {
-          log(error.toString());
           return handler.next(error);
         },
       ),
